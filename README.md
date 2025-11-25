@@ -40,3 +40,7 @@ city-tourist-map/
 ├─ style.css       # Styles for layout, sidebar, markers
 └─ app.js          # Leaflet map initialization, markers, filters
 ```
+## Next version
+
+- Add multiple language feature.
+- Add images to the filters
