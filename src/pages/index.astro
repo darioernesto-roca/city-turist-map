@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { allPlaces, categories, featuredPlaces, getCategoryLabel } from '../lib/places.js';
+import mapScript from '../scripts/map.js?url';
+
+const placesWithLabels = allPlaces.map((place) => ({
+  ...place,
+  categoryLabel: getCategoryLabel(place.category),
+}));
+---
+<BaseLayout title="Visit Santa Marta | Interactive Map" description="Plan your Santa Marta trip with filters, featured highlights, and detailed place cards.">
+  <section class="map-layout" data-map-app data-places={JSON.stringify(placesWithLabels)}>
+    <aside class="sidebar">
+      <div>
+        <h1>Visit Santa Marta</h1>
+        <p>Discover landmarks, food, nightlife, transport hubs, and parks around the city.</p>
+      </div>
+
+      <div>
+        <p class="section-title">Filters</p>
+        <form class="filters" data-filters>
+          {categories.map((category) => (
+            <label class="filter-item">
+              <input type="checkbox" value={category} checked />
+              {getCategoryLabel(category)}
+            </label>
+          ))}
+        </form>
+      </div>
+
+      <div>
+        <p class="section-title">Featured</p>
+        <div class="featured-grid">
+          {featuredPlaces.map((place) => (
+            <article class="featured-card">
+              <h3>{place.name}</h3>
+              <p>{place.shortDescription}</p>
+              <button class="button-outline" type="button" data-place-id={place.id} data-place-category={place.category}>
+                View details
+              </button>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p class="section-title">Places</p>
+        <div class="place-list" data-place-list>
+          {placesWithLabels.map((place) => (
+            <button
+              type="button"
+              data-place-id={place.id}
+              data-place-category={place.category}
+            >
+              <strong>{place.name}</strong>
+              <div>{place.shortDescription}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </aside>
+
+    <section class="map-area">
+      <div id="map" data-map></div>
+
+      <div class="place-card-overlay" data-place-overlay></div>
+
+      <aside class="place-card-panel" aria-hidden="true" data-place-card>
+        <div class="place-card-body">
+          <div class="place-card-header">
+            <div>
+              <h2 class="place-card-title" data-place-name>Place</h2>
+              <span class="category-badge" data-place-category>Category</span>
+            </div>
+            <button class="button-outline" type="button" data-place-close>Close</button>
+          </div>
+
+          <div data-place-image-wrapper hidden>
+            <img data-place-image alt="" />
+          </div>
+
+          <p data-place-description></p>
+          <p data-place-address></p>
+
+          <div class="place-card-actions">
+            <a class="button-primary" data-place-maps target="_blank" rel="noreferrer">Open in Google Maps</a>
+            <a class="button-outline" data-place-website target="_blank" rel="noreferrer">Visit website</a>
+            <button class="button-outline" type="button">Book / Buy</button>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </section>
+  <script type="module" src={mapScript}></script>
+</BaseLayout>

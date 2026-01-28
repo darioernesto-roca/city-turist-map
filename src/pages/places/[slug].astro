@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { allPlaces, getCategoryLabel, buildGoogleMapsLink } from '../../lib/places.js';
+
+export async function getStaticPaths() {
+  return allPlaces.map((place) => ({
+    params: { slug: place.slug },
+    props: { place },
+  }));
+}
+
+const { place } = Astro.props;
+const mapsLink = buildGoogleMapsLink(place.coords);
+---
+<BaseLayout title={place.name} description={place.shortDescription}>
+  <section class="place-detail">
+    <a class="button-outline" href="/places">← Back to places</a>
+
+    <div>
+      <span class="category-badge">{getCategoryLabel(place.category)}</span>
+      <h1>{place.name}</h1>
+      <p>{place.longDescription || place.shortDescription}</p>
+    </div>
+
+    {place.image && <img src={place.image} alt={place.name} />}
+
+    <div class="place-card-actions">
+      <a class="button-primary" href={mapsLink} target="_blank" rel="noreferrer">Open in Google Maps</a>
+      {place.website && (
+        <a class="button-outline" href={place.website} target="_blank" rel="noreferrer">Visit website</a>
+      )}
+      <button class="button-outline" type="button">Book / Buy</button>
+    </div>
+
+    {place.address && <p><strong>Address:</strong> {place.address}</p>}
+  </section>
+</BaseLayout>

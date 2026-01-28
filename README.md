@@ -1,46 +1,82 @@
-# City Tourist Map
+# Visit Santa Marta (Astro + Leaflet)
 
-An interactive **tourist city map** inspired by the classic hotel lobby maps you get in cities like Paris or Rome.  
-The app displays an interactive map of the city with **points of interest (POIs)**, organized by categories such as landmarks, food, nightlife, and transport. Users can toggle categories on and off and explore the city visually.
+A production-ready baseline for the **Visit Santa Marta** touristic website. The experience is static-first and centered on an interactive Leaflet map with a data-driven sidebar, filters, and a polished Place Card panel.
 
-This can be the foundation for a richer city guide with walking tours, transport routes, and advertising spots for local businesses.
+## Highlights
 
----
-
-## Features
-
-- Interactive map built with **Leaflet** and **OpenStreetMap** tiles.
-- Custom **category filters** (Landmarks, Food, Nightlife, Transport, etc.).
-- Color-coded markers by category.
-- Sidebar with:
-  - Short intro text.
-  - Filter checkboxes.
-  - Example **“Featured / Ads”** boxes (e.g., hotels, tours).
-- Responsive layout (sidebar + full-height map).
-
----
-
-## Technologies Used
-
-- **HTML5** – Base structure of the page.
-- **CSS3** – Layout and styling (sidebar, map container, markers).
-- **Vanilla JavaScript (ES6)** – App logic, markers, filtering.
-- **[Leaflet](https://leafletjs.com/)** – JavaScript library for interactive maps.
-- **[OpenStreetMap](https://www.openstreetmap.org/)** – Map tiles used as the base map layer.
-
-No build tools or frameworks are required. Everything runs as static files.
-
----
+- **Astro + Leaflet** static-first build with client-only map initialization.
+- **Single source of truth** (`src/data/places.json`) for markers, lists, filters, and pages.
+- **Place Card UX** replaces Leaflet popups with a responsive side panel / bottom sheet.
+- **SEO baseline** with dynamic place pages and basic Open Graph metadata.
+- **Scalable content structure** for future Markdown or CMS-based content.
 
 ## Project Structure
 
-```text
-city-tourist-map/
-├─ index.html      # Main HTML file (layout, sidebar, map container)
-├─ style.css       # Styles for layout, sidebar, markers
-└─ app.js          # Leaflet map initialization, markers, filters
 ```
-## Next version
+.
+├── public/
+│   ├── images/
+│   ├── favicon.svg
+│   └── og-placeholder.svg
+├── src/
+│   ├── components/
+│   ├── data/places.json
+│   ├── layouts/
+│   ├── lib/
+│   ├── pages/
+│   ├── scripts/
+│   └── styles/
+├── astro.config.mjs
+├── package.json
+└── README.md
+```
 
-- Add multiple language feature.
-- Add images to the filters
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Then open `http://localhost:4321`.
+
+### Build & Preview
+
+```bash
+npm run build
+npm run preview
+```
+
+## How to Add or Edit Places
+
+All places live in `src/data/places.json`. Add a new object with the required fields:
+
+```json
+{
+  "id": "example-place",
+  "name": "Example Place",
+  "slug": "example-place",
+  "coords": [11.2408, -74.2119],
+  "category": "landmark",
+  "shortDescription": "Short teaser for the place.",
+  "longDescription": "Optional longer description.",
+  "image": "/images/place-placeholder.svg",
+  "address": "Optional address",
+  "website": "https://example.com",
+  "tags": ["optional", "tags"],
+  "featured": true
+}
+```
+
+Categories are inferred automatically from the dataset, so new categories will appear in the filters without additional changes.
+
+## Deployment Notes
+
+- This project is static-first and deploys to any static host (Netlify, Vercel static export, GitHub Pages, Cloudflare Pages).
+- Use `npm run build` to generate the production output in `dist/`.
+
+## Scripts
+
+- `npm run dev` – start the Astro dev server
+- `npm run build` – production build
+- `npm run preview` – preview the production build
