@@ -25,8 +25,9 @@ if (appRoot) {
     zoomControl: false,
   }).setView([11.2408, -74.2119], 13);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    maxZoom: 20,
   }).addTo(map);
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
