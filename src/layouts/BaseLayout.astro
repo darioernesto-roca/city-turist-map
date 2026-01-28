@@ -1,0 +1,42 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+const {
+  title = 'Visit Santa Marta',
+  description = 'Discover Santa Marta highlights with an interactive map and curated places.',
+} = Astro.props;
+
+const fullTitle = title.includes('Visit Santa Marta')
+  ? title
+  : `${title} | Visit Santa Marta`;
+
+const ogImage = '/og-placeholder.svg';
+const currentPath = Astro.url.pathname;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Visit Santa Marta" />
+    <meta property="og:image" content={ogImage} />
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="/fonts.css" />
+  </head>
+  <body>
+    <div class="main-layout">
+      <Header currentPath={currentPath} />
+      <main>
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+---
+const { currentPath } = Astro.props;
+const navItems = [
+  { href: '/', label: 'Map' },
+  { href: '/places', label: 'Places' },
+  { href: '/news', label: 'News' },
+];
+---
+<header class="site-header">
+  <a class="site-logo" href="/">Visit Santa Marta</a>
+  <nav class="site-nav">
+    {navItems.map((item) => (
+      <a class={currentPath === item.href ? 'active' : ''} href={item.href}>
+        {item.label}
+      </a>
+    ))}
+  </nav>
+</header>
