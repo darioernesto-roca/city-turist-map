@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { allPlaces, getCategoryLabel } from '../../lib/places.js';
+---
+<BaseLayout title="Places" description="Browse all Santa Marta places and plan your next stop.">
+  <section class="places-grid">
+    {allPlaces.map((place) => (
+      <article class="place-card">
+        {place.image && <img src={place.image} alt={place.name} />}
+        <div>
+          <span class="category-badge">{getCategoryLabel(place.category)}</span>
+          <h2>{place.name}</h2>
+          <p>{place.shortDescription}</p>
+        </div>
+        <a class="button-outline" href={`/places/${place.slug}`}>View details</a>
+      </article>
+    ))}
+  </section>
+</BaseLayout>
