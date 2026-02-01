@@ -1,18 +1,56 @@
 ---
-const { currentPath } = Astro.props;
+import { buildLocalizedPath, localeNames, locales, normalizePath, t } from '../lib/i18n.js';
+
+const { currentPath, lang, basePath } = Astro.props;
 const navItems = [
-  { href: '/', label: 'Map' },
-  { href: '/places', label: 'Places' },
-  { href: '/news', label: 'News' },
+  { href: '/', label: t(lang, 'navMap') },
+  { href: '/places', label: t(lang, 'navPlaces') },
+  { href: '/news', label: t(lang, 'navNews') },
 ];
+
+const normalizedPath = normalizePath(currentPath);
+const switcherId = 'language-select';
 ---
 <header class="site-header">
-  <a class="site-logo" href="/">Visit Santa Marta</a>
+  <a class="site-logo" href={buildLocalizedPath(lang, '/')}>{t(lang, 'siteName')}</a>
   <nav class="site-nav">
-    {navItems.map((item) => (
-      <a class={currentPath === item.href ? 'active' : ''} href={item.href}>
-        {item.label}
-      </a>
-    ))}
+    {navItems.map((item) => {
+      const localizedHref = buildLocalizedPath(lang, item.href);
+      const normalizedHref = normalizePath(localizedHref);
+      return (
+        <a class={normalizedPath === normalizedHref ? 'active' : ''} href={localizedHref}>
+          {item.label}
+        </a>
+      );
+    })}
   </nav>
+  <div class="language-switcher">
+    <label for={switcherId}>{t(lang, 'languageLabel')}</label>
+    <select
+      id={switcherId}
+      data-language-select
+      data-current-path={basePath}
+      aria-label={t(lang, 'languageLabel')}
+    >
+      {locales.map((locale) => (
+        <option value={locale} selected={locale === lang}>{localeNames[locale]}</option>
+      ))}
+    </select>
+  </div>
+  <script type="module" is:inline>
+    const languageSelect = document.querySelector('[data-language-select]');
+    if (languageSelect) {
+      const currentPath = languageSelect.dataset.currentPath || '/';
+      const storedLang = window.localStorage.getItem('preferredLanguage');
+      if (!storedLang) {
+        window.localStorage.setItem('preferredLanguage', languageSelect.value);
+      }
+      languageSelect.addEventListener('change', (event) => {
+        const lang = event.target.value;
+        window.localStorage.setItem('preferredLanguage', lang);
+        const suffix = currentPath === '/' ? '' : currentPath;
+        window.location.href = `/${lang}${suffix}`;
+      });
+    }
+  </script>
 </header>

@@ -1,22 +1,43 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import {
+  buildLocalizedPath,
+  defaultLocale,
+  locales,
+  stripLangFromPath,
+  t,
+} from '../lib/i18n.js';
 import '../styles/global.css';
 
 const {
-  title = 'Visit Santa Marta',
-  description = 'Discover Santa Marta highlights with an interactive map and curated places.',
+  title,
+  description,
+  lang = defaultLocale,
+  canonicalPathOverride,
+  includeAlternates = true,
 } = Astro.props;
 
-const fullTitle = title.includes('Visit Santa Marta')
-  ? title
-  : `${title} | Visit Santa Marta`;
+const resolvedTitle = title ?? t(lang, 'siteName');
+
+const fullTitle = resolvedTitle.includes(t(lang, 'siteName'))
+  ? resolvedTitle
+  : `${resolvedTitle} | ${t(lang, 'siteName')}`;
 
 const ogImage = '/og-placeholder.svg';
 const currentPath = Astro.url.pathname;
+const basePath = stripLangFromPath(currentPath);
+const canonicalPath = canonicalPathOverride ?? buildLocalizedPath(lang, basePath);
+const canonicalUrl = new URL(canonicalPath, Astro.site);
+const alternates = includeAlternates
+  ? locales.map((locale) => {
+      const href = new URL(buildLocalizedPath(locale, basePath), Astro.site).toString();
+      return { locale, href };
+    })
+  : [];
 ---
 <!DOCTYPE html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,18 +46,30 @@ const currentPath = Astro.url.pathname;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Visit Santa Marta" />
+    <meta property="og:site_name" content={t(lang, 'siteName')} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonicalUrl.toString()} />
+    <link rel="canonical" href={canonicalUrl.toString()} />
+    {alternates.map((alternate) => (
+      <link rel="alternate" hreflang={alternate.locale} href={alternate.href} />
+    ))}
+    {includeAlternates && (
+      <link
+        rel="alternate"
+        hreflang="x-default"
+        href={alternates.find((alt) => alt.locale === defaultLocale)?.href}
+      />
+    )}
     <link rel="icon" href="/favicon.svg" />
     <link rel="stylesheet" href="/fonts.css" />
   </head>
   <body>
     <div class="main-layout">
-      <Header currentPath={currentPath} />
+      <Header currentPath={canonicalPath} lang={lang} basePath={basePath} />
       <main>
         <slot />
       </main>
-      <Footer />
+      <Footer lang={lang} />
     </div>
   </body>
 </html>

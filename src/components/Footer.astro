@@ -1,3 +1,8 @@
+---
+import { t } from '../lib/i18n.js';
+
+const { lang } = Astro.props;
+---
 <footer class="footer">
-  <p>Visit Santa Marta is a demo travel guide. Verify details locally before visiting. Contact: hello@santamarta.example</p>
+  <p>{t(lang, 'footerNotice')}</p>
 </footer>
