@@ -1,18 +1,11 @@
 import places from '../data/places.json';
+import { getCategoryLabel } from './i18n.js';
 
 export const allPlaces = places;
 
-export const categoryLabels = {
-  landmark: 'Landmarks',
-  food: 'Food',
-  nightlife: 'Nightlife',
-  transport: 'Transport',
-  park: 'Parks',
-};
-
 export const categories = Array.from(new Set(places.map((place) => place.category)));
 
-export const getCategoryLabel = (category) => categoryLabels[category] ?? category;
+export const getLocalizedCategoryLabel = (category, lang) => getCategoryLabel(category, lang);
 
 export const featuredPlaces = places.filter((place) => place.featured).slice(0, 2);
 

@@ -10,6 +10,7 @@ if (appRoot) {
   const cardPanel = appRoot.querySelector('[data-place-card]');
   const cardOverlay = appRoot.querySelector('[data-place-overlay]');
   const closeButton = appRoot.querySelector('[data-place-close]');
+  const photoAltTemplate = appRoot.dataset.photoAltTemplate || '{name}';
 
   const places = JSON.parse(appRoot.dataset.places || '[]');
   const markers = new Map();
@@ -71,7 +72,7 @@ if (appRoot) {
 
     if (place.image) {
       imageEl.src = place.image;
-      imageEl.alt = `${place.name} photo`;
+      imageEl.alt = photoAltTemplate.replace('{name}', place.name);
       imageEl.closest('[data-place-image-wrapper]').hidden = false;
     } else {
       imageEl.closest('[data-place-image-wrapper]').hidden = true;
