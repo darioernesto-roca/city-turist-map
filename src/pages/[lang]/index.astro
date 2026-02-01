@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { allPlaces, categories, featuredPlaces, getLocalizedCategoryLabel } from '../../lib/places.js';
+import { getLocaleFromParams, getPlaceField, locales, t } from '../../lib/i18n.js';
+import mapScript from '../../scripts/map.js?url';
+
+export async function getStaticPaths() {
+  return locales.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = getLocaleFromParams(Astro.params);
+
+const placesWithLabels = allPlaces.map((place) => ({
+  ...place,
+  name: getPlaceField(place, 'name', lang),
+  shortDescription: getPlaceField(place, 'shortDescription', lang),
+  longDescription: getPlaceField(place, 'longDescription', lang),
+  address: getPlaceField(place, 'address', lang),
+  categoryLabel: getLocalizedCategoryLabel(place.category, lang),
+}));
+---
+<BaseLayout title={t(lang, 'mapPageTitle')} description={t(lang, 'mapPageDescription')} lang={lang}>
+  <section
+    class="map-layout"
+    data-map-app
+    data-places={JSON.stringify(placesWithLabels)}
+    data-photo-alt-template={t(lang, 'placePhotoAlt')}
+  >
+    <aside class="sidebar">
+      <div>
+        <h1>{t(lang, 'mapHeading')}</h1>
+        <p>{t(lang, 'mapIntro')}</p>
+      </div>
+
+      <div>
+        <p class="section-title">{t(lang, 'filtersTitle')}</p>
+        <form class="filters" data-filters>
+          {categories.map((category) => (
+            <label class="filter-item">
+              <input type="checkbox" value={category} checked />
+              {getLocalizedCategoryLabel(category, lang)}
+            </label>
+          ))}
+        </form>
+      </div>
+
+      <div>
+        <p class="section-title">{t(lang, 'featuredTitle')}</p>
+        <div class="featured-grid">
+          {featuredPlaces.map((place) => (
+            <article class="featured-card">
+              <h3>{getPlaceField(place, 'name', lang)}</h3>
+              <p>{getPlaceField(place, 'shortDescription', lang)}</p>
+              <button
+                class="button-outline"
+                type="button"
+                data-place-id={place.id}
+                data-place-category={place.category}
+              >
+                {t(lang, 'viewDetails')}
+              </button>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p class="section-title">{t(lang, 'placesTitle')}</p>
+        <div class="place-list" data-place-list>
+          {placesWithLabels.map((place) => (
+            <button
+              type="button"
+              data-place-id={place.id}
+              data-place-category={place.category}
+            >
+              <strong>{place.name}</strong>
+              <div>{place.shortDescription}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </aside>
+
+    <section class="map-area">
+      <div id="map" data-map></div>
+
+      <div class="place-card-overlay" data-place-overlay></div>
+
+      <aside class="place-card-panel" aria-hidden="true" data-place-card>
+        <div class="place-card-body">
+          <div class="place-card-header">
+            <div>
+              <h2 class="place-card-title" data-place-name>{t(lang, 'placeCardTitle')}</h2>
+              <span class="category-badge" data-place-category>{t(lang, 'placeCardCategory')}</span>
+            </div>
+            <button class="button-outline" type="button" data-place-close>{t(lang, 'close')}</button>
+          </div>
+
+          <div data-place-image-wrapper hidden>
+            <img data-place-image alt="" />
+          </div>
+
+          <p data-place-description></p>
+          <p data-place-address></p>
+
+          <div class="place-card-actions">
+            <a class="button-primary" data-place-maps target="_blank" rel="noreferrer">
+              {t(lang, 'openMaps')}
+            </a>
+            <a class="button-outline" data-place-website target="_blank" rel="noreferrer">
+              {t(lang, 'visitWebsite')}
+            </a>
+            <button class="button-outline" type="button">{t(lang, 'bookBuy')}</button>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </section>
+  <script type="module" src={mapScript}></script>
+</BaseLayout>

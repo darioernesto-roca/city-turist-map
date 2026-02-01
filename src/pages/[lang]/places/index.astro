@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { allPlaces, getLocalizedCategoryLabel } from '../../../lib/places.js';
+import { buildLocalizedPath, getLocaleFromParams, getPlaceField, locales, t } from '../../../lib/i18n.js';
+
+export async function getStaticPaths() {
+  return locales.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = getLocaleFromParams(Astro.params);
+---
+<BaseLayout title={t(lang, 'placesPageTitle')} description={t(lang, 'placesPageDescription')} lang={lang}>
+  <section class="places-grid">
+    {allPlaces.map((place) => (
+      <article class="place-card">
+        {place.image && <img src={place.image} alt={getPlaceField(place, 'name', lang)} />}
+        <div>
+          <span class="category-badge">{getLocalizedCategoryLabel(place.category, lang)}</span>
+          <h2>{getPlaceField(place, 'name', lang)}</h2>
+          <p>{getPlaceField(place, 'shortDescription', lang)}</p>
+        </div>
+        <a class="button-outline" href={buildLocalizedPath(lang, `/places/${place.slug}`)}>
+          {t(lang, 'viewDetails')}
+        </a>
+      </article>
+    ))}
+  </section>
+</BaseLayout>

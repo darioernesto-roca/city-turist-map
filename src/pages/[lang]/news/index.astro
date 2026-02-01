@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getLocaleFromParams, locales, t } from '../../../lib/i18n.js';
+
+export async function getStaticPaths() {
+  return locales.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = getLocaleFromParams(Astro.params);
+---
+<BaseLayout title={t(lang, 'newsPageTitle')} description={t(lang, 'newsPageDescription')} lang={lang}>
+  <section class="places-grid">
+    <article class="place-card">
+      <h1>{t(lang, 'newsHeading')}</h1>
+      <p>{t(lang, 'newsBody')}</p>
+    </article>
+  </section>
+</BaseLayout>
