@@ -8,6 +8,7 @@ A production-ready baseline for the **Visit Santa Marta** touristic website. The
 - **Single source of truth** (`src/data/places.json`) for markers, lists, filters, and pages.
 - **Place Card UX** replaces Leaflet popups with a responsive side panel / bottom sheet.
 - **Path-prefixed i18n** with explicit user language selection (no redirects).
+- **Language tool** (landing chooser + header switcher) saves the user preference in `localStorage`.
 - **SEO baseline** with dynamic place pages and basic Open Graph metadata.
 - **Scalable content structure** for future Markdown or CMS-based content.
 
