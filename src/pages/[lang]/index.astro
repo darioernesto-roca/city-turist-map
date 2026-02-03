@@ -89,15 +89,15 @@ const placesWithLabels = allPlaces.map((place) => ({
       <div class="place-card-overlay" data-place-overlay></div>
 
       <aside class="place-card-panel" aria-hidden="true" data-place-card>
-        <div class="place-card-body">
-          <div class="place-card-header">
-            <div>
-              <h2 class="place-card-title" data-place-name>{t(lang, 'placeCardTitle')}</h2>
-              <span class="category-badge" data-place-category>{t(lang, 'placeCardCategory')}</span>
-            </div>
-            <button class="button-outline" type="button" data-place-close>{t(lang, 'close')}</button>
+        <div class="place-card-header">
+          <div>
+            <h2 class="place-card-title" data-place-name>{t(lang, 'placeCardTitle')}</h2>
+            <span class="category-badge" data-place-category>{t(lang, 'placeCardCategory')}</span>
           </div>
+          <button class="button-outline" type="button" data-place-close>{t(lang, 'close')}</button>
+        </div>
 
+        <div class="place-card-body">
           <div data-place-image-wrapper hidden>
             <img data-place-image alt="" />
           </div>
