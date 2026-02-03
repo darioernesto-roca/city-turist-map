@@ -227,7 +227,7 @@ button {
   top: var(--space-5);
   right: var(--space-5);
   width: min(360px, 90%);
-  height: calc(100% - 2 * var(--space-5));
+  /* height: calc(100% - 2 * var(--space-5)); */
   overflow: hidden;
   background: var(--color-surface);
   border-radius: var(--radius-lg);
@@ -260,7 +260,7 @@ button {
   display: grid;
   gap: var(--space-4);
   overflow: auto;
-  flex: 1;
+  /* flex: 1; */
   min-height: 0;
 }
 
