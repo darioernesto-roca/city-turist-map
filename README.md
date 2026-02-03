@@ -84,6 +84,11 @@ The root `/` page is a lightweight language chooser that links into the localize
 3. Add category translations in `categoryLabels`.
 4. Astro will build new static pages under `src/pages/[lang]/...` automatically for the new locale.
 
+### How to set the initial zoom
+
+- The initial map zoom is configured in src/scripts/map.js where the Leaflet map is created and setView is called.
+- The second argument to setView is the zoom level (currently 15).
+
 ### How to translate new UI strings
 
 1. Add a new key to `translations.en` and `translations.es` in `src/lib/i18n.js`.

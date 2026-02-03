@@ -26,7 +26,7 @@ if (appRoot) {
 
   const map = L.map(mapEl, {
     zoomControl: false,
-  }).setView([11.2408, -74.2119], 13);
+  }).setView([11.2408, -74.2119], 16);
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
@@ -125,10 +125,10 @@ if (appRoot) {
   };
 
   const panToPlace = (place) => {
-    const targetZoom = 14;
+    const targetZoom = 16;
     const isReducedMotion = prefersReducedMotion.matches;
     const isDesktop = window.matchMedia('(min-width: 961px)').matches;
-    const cardOffset = cardPanel && isDesktop ? cardPanel.offsetWidth + 24 : 0;
+    const cardOffset = cardPanel && isDesktop ? cardPanel.offsetWidth + 24 : 0; // This line calculates the offset needed to account for the open card panel on desktop screens. The 24 pixels likely represent some additional spacing or margin.
     const sequenceId = (panSequence += 1);
 
     if (isReducedMotion) {
