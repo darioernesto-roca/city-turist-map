@@ -1,6 +1,12 @@
 :root {
   color-scheme: light;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
   --color-bg: #f8fafc;
@@ -227,7 +233,7 @@ button {
   top: var(--space-5);
   right: var(--space-5);
   width: min(360px, 90%);
-  height: calc(100dvh - 2 * var(--space-5));
+  /* height: calc(100dvh - 2 * var(--space-5)); */
   max-height: calc(100dvh - 2 * var(--space-5));
   overflow: hidden;
   background: var(--color-surface);
@@ -241,7 +247,7 @@ button {
 }
 
 .place-card-panel.is-open {
-  transform: translateX(0);
+  transform: translateX(0px);
 }
 
 .place-card-header {
@@ -385,7 +391,7 @@ button {
   }
 
   .place-card-panel.is-open {
-    transform: translateY(0);
+    transform: translateY(30px);
   }
 }
 
