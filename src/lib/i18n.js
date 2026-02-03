@@ -41,7 +41,7 @@ export const translations = {
     languageLandingDescription: 'Select a language to explore the interactive map and curated places.',
     languageLandingHint: 'Your selection is saved for future visits.',
     footerNotice:
-      'Visit Santa Marta is a demo travel guide. Verify details locally before visiting. Contact: hello@santamarta.example',
+      'A Local Atlas city guide. Verify details locally before visiting. Contact: info@visitsantamarta.com',
   },
   es: {
     siteName: 'Visita Santa Marta',
@@ -78,7 +78,7 @@ export const translations = {
     languageLandingDescription: 'Selecciona un idioma para explorar el mapa interactivo y los lugares destacados.',
     languageLandingHint: 'Guardamos tu selección para futuras visitas.',
     footerNotice:
-      'Visita Santa Marta es una guía turística de demostración. Verifica la información localmente antes de visitar. Contacto: hello@santamarta.example',
+      'Una guía de Local Atlas. Verifica la información localmente antes de visitar. Contacto: info@visitsantamarta.com',
   },
 };
 
