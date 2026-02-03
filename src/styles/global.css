@@ -218,19 +218,25 @@ button {
   width: 100%;
 }
 
+.place-card-open {
+  overflow: hidden;
+}
+
 .place-card-panel {
   position: absolute;
   top: var(--space-5);
   right: var(--space-5);
   width: min(360px, 90%);
-  max-height: calc(100% - 2 * var(--space-5));
-  overflow: auto;
+  height: calc(100% - 2 * var(--space-5));
+  overflow: hidden;
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   transform: translateX(120%);
   transition: transform 0.3s ease;
   z-index: 1001;
+  display: flex;
+  flex-direction: column;
 }
 
 .place-card-panel.is-open {
@@ -242,12 +248,20 @@ button {
   justify-content: space-between;
   align-items: flex-start;
   gap: var(--space-3);
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  padding-bottom: var(--space-3);
+  z-index: 2;
 }
 
 .place-card-body {
   padding: var(--space-5);
   display: grid;
   gap: var(--space-4);
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .place-card-title {
@@ -362,13 +376,10 @@ button {
 
   .place-card-panel {
     position: fixed;
-    bottom: 0;
-    top: auto;
-    left: 0;
-    right: 0;
+    inset: 0;
     width: 100%;
-    max-height: 70vh;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    height: 100dvh;
+    border-radius: 0;
     transform: translateY(100%);
   }
 
