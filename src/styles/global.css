@@ -227,7 +227,7 @@ button {
   top: var(--space-5);
   right: var(--space-5);
   width: min(360px, 90%);
-  max-height: calc(100% - 2 * var(--space-5));
+  height: calc(100% - 2 * var(--space-5));
   overflow: hidden;
   background: var(--color-surface);
   border-radius: var(--radius-lg);
@@ -261,6 +261,7 @@ button {
   gap: var(--space-4);
   overflow: auto;
   flex: 1;
+  min-height: 0;
 }
 
 .place-card-title {
@@ -377,7 +378,7 @@ button {
     position: fixed;
     inset: 0;
     width: 100%;
-    max-height: none;
+    height: 100dvh;
     border-radius: 0;
     transform: translateY(100%);
   }

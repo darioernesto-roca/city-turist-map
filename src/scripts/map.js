@@ -103,6 +103,9 @@ if (appRoot) {
   };
 
   const openCard = () => {
+    if (cardPanel?.classList.contains('is-open')) {
+      return;
+    }
     cardPanel?.classList.add('is-open');
     cardOverlay?.classList.add('is-visible');
     cardPanel?.setAttribute('aria-hidden', 'false');
