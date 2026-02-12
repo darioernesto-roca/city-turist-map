@@ -237,7 +237,7 @@ button {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  min-height: min(600px, 78vh);
+  height: clamp(22rem, 78vh, 37.5rem);
   box-shadow: var(--shadow-sm);
 }
 
@@ -414,7 +414,7 @@ button {
   }
 
   .map-area {
-    min-height: 65vh;
+    height: 65vh;
   }
 
   .place-card-panel {
@@ -469,7 +469,7 @@ button {
   }
 
   .map-area {
-    min-height: 55vh;
+    height: 55vh;
   }
 
   .featured-card,
