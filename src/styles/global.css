@@ -31,6 +31,7 @@
   --space-5: 1.5rem;
   --space-6: 2rem;
   --space-7: 3rem;
+  --container-inline-padding: clamp(1rem, 3vw, 2rem);
 }
 
 * {
@@ -42,8 +43,25 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  font-size: 100%;
   background: var(--color-bg);
   color: var(--color-text);
+}
+
+body {
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+li,
+figcaption {
+  text-wrap: pretty;
 }
 
 a {
@@ -72,9 +90,11 @@ button {
 
 .site-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-5) var(--space-6) var(--space-4);
+  gap: var(--space-3);
+  padding: var(--space-5) var(--container-inline-padding) var(--space-4);
 }
 
 .site-logo {
@@ -85,6 +105,7 @@ button {
 
 .site-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-4);
   font-weight: 500;
 }
@@ -116,7 +137,7 @@ button {
 }
 
 .footer {
-  padding: var(--space-6);
+  padding: var(--space-6) var(--container-inline-padding);
   text-align: center;
   font-size: 0.9rem;
   color: var(--color-text-muted);
@@ -127,7 +148,8 @@ button {
   display: grid;
   grid-template-columns: minmax(240px, 320px) 1fr;
   gap: var(--space-5);
-  padding: 0 var(--space-6) var(--space-6);
+  align-items: start;
+  padding: 0 var(--container-inline-padding) var(--space-6);
 }
 
 .sidebar {
@@ -138,7 +160,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
-  min-height: 540px;
+  min-height: min(540px, 100%);
 }
 
 .sidebar h1 {
@@ -190,7 +212,7 @@ button {
 .place-list {
   display: grid;
   gap: var(--space-2);
-  max-height: 280px;
+  max-height: min(280px, 40vh);
   overflow: auto;
   padding-right: var(--space-2);
 }
@@ -215,7 +237,7 @@ button {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  min-height: 600px;
+  min-height: min(600px, 78vh);
   box-shadow: var(--shadow-sm);
 }
 
@@ -333,7 +355,7 @@ button {
 }
 
 .places-grid {
-  padding: 0 var(--space-6) var(--space-6);
+  padding: 0 var(--container-inline-padding) var(--space-6);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--space-5);
@@ -350,14 +372,14 @@ button {
 
 .place-card img {
   border-radius: var(--radius-md);
-  height: 140px;
+  height: clamp(8rem, 20vw, 10rem);
   object-fit: cover;
 }
 
 .place-detail {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 var(--space-6) var(--space-6);
+  padding: 0 var(--container-inline-padding) var(--space-6);
   display: grid;
   gap: var(--space-5);
 }
@@ -369,6 +391,20 @@ button {
 }
 
 @media (max-width: 960px) {
+  .site-header {
+    align-items: flex-start;
+  }
+
+  .language-switcher {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .language-switcher select {
+    max-width: 14rem;
+    width: 100%;
+  }
+
   .map-layout {
     grid-template-columns: 1fr;
   }
@@ -378,7 +414,7 @@ button {
   }
 
   .map-area {
-    min-height: 70vh;
+    min-height: 65vh;
   }
 
   .place-card-panel {
@@ -391,11 +427,22 @@ button {
   }
 
   .place-card-panel.is-open {
-    transform: translateY(30px);
+    transform: translateY(0);
+  }
+
+  .place-card-header,
+  .place-card-body {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
   }
 }
 
 @media (max-width: 720px) {
+  html,
+  body {
+    font-size: max(0.875rem, 12px);
+  }
+
   .site-header {
     flex-direction: column;
     gap: var(--space-3);
@@ -403,13 +450,43 @@ button {
   }
 
   .site-nav {
-    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .site-nav a {
+    padding: var(--space-2);
   }
 
   .map-layout,
   .places-grid,
   .place-detail {
-    padding-left: var(--space-4);
-    padding-right: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .sidebar {
+    min-height: auto;
+    padding: var(--space-4);
+  }
+
+  .map-area {
+    min-height: 55vh;
+  }
+
+  .featured-card,
+  .place-card {
+    padding: var(--space-3);
+  }
+
+  .place-card-title {
+    font-size: 1.125rem;
+  }
+
+  .category-badge {
+    font-size: 0.75rem;
+  }
+
+  .button-primary,
+  .button-outline {
+    width: 100%;
   }
 }
