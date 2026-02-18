@@ -16,6 +16,7 @@ const {
   lang = defaultLocale,
   canonicalPathOverride,
   includeAlternates = true,
+  withLandingBackground = false,
 } = Astro.props;
 
 const resolvedTitle = title ?? t(lang, 'siteName');
@@ -64,7 +65,7 @@ const alternates = includeAlternates
     <link rel="stylesheet" href="/fonts.css" />
   </head>
   <body>
-    <div class="main-layout">
+    <div class:list={["main-layout", withLandingBackground && "main-layout--landing"]}>
       <Header currentPath={canonicalPath} lang={lang} basePath={basePath} />
       <main>
         <slot />

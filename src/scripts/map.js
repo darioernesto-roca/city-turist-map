@@ -24,7 +24,6 @@ if (appRoot) {
   );
 
   let activePlaceId = null;
-  let panSequence = 0;
 
   const map = L.map(mapEl, {
     zoomControl: false,
@@ -133,29 +132,29 @@ if (appRoot) {
     const targetZoom = 16;
     const isReducedMotion = prefersReducedMotion.matches;
     const isDesktop = window.matchMedia("(min-width: 961px)").matches;
-    const cardOffset = cardPanel && isDesktop ? cardPanel.offsetWidth + -70 : 0; // This line calculates the offset needed to account for the open card panel on desktop screens. The 24 pixels likely represent some additional spacing or margin.
-    const sequenceId = (panSequence += 1);
+    const desktopOffset =
+      cardPanel && isDesktop ? Math.round(cardPanel.offsetWidth * 0.4) : 0;
+    const placeLatLng = L.latLng(place.coords[0], place.coords[1]);
+
+    const getTargetCenter = () => {
+      if (!desktopOffset) return placeLatLng;
+      const pointAtZoom = map.project(placeLatLng, targetZoom);
+      const shiftedCenterPoint = L.point(pointAtZoom.x + desktopOffset, pointAtZoom.y);
+      return map.unproject(shiftedCenterPoint, targetZoom);
+    };
+
+    const targetCenter = getTargetCenter();
 
     if (isReducedMotion) {
-      map.setView(place.coords, targetZoom, { animate: false });
-      if (cardOffset) {
-        map.panBy([-cardOffset / 2, 0], { animate: false });
-      }
+      map.setView(targetCenter, targetZoom, { animate: false });
       return;
     }
 
-    map.flyTo(place.coords, targetZoom, {
-      duration: 0.75,
-      easeLinearity: 0.25,
+    map.flyTo(targetCenter, targetZoom, {
+      animate: true,
+      duration: 1.2,
+      easeLinearity: 0.15,
     });
-
-    if (cardOffset) {
-      map.once("moveend", () => {
-        if (sequenceId !== panSequence) return;
-        map.panBy([-cardOffset * 0.1, 0], { animate: true, duration: 0.3 });
-        // map.panBy([-cardOffset / 2, 0], { animate: true, duration: 0.3 });
-      });
-    }
   };
 
   const setActivePlace = (placeId) => {
