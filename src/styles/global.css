@@ -246,7 +246,7 @@ button {
 .map-area {
   position: relative;
   border-radius: var(--radius-lg);
-  overflow: visible;
+  overflow: hidden;
   height: clamp(22rem, 78vh, 37.5rem);
   box-shadow: var(--shadow-sm);
   isolation: isolate;

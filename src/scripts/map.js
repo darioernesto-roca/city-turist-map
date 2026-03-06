@@ -39,25 +39,26 @@ if (appRoot) {
 
   L.control.zoom({ position: "bottomright" }).addTo(map);
 
-  const markerStyles = {
-    default: {
-      radius: 8,
-      color: "#2563eb",
-      weight: 2,
-      fillColor: "#60a5fa",
-      fillOpacity: 0.85,
-    },
-    active: {
-      radius: 10,
-      color: "#0f172a",
-      weight: 2,
-      fillColor: "#f59e0b",
-      fillOpacity: 1,
-    },
+  const categoryConfig = {
+    landmark:  { emoji: "🏛️", color: "#7c3aed" },
+    nightlife: { emoji: "🍻", color: "#db2777" },
+    food:      { emoji: "🍽️", color: "#ea580c" },
+    transport: { emoji: "🚌", color: "#0891b2" },
+    park:      { emoji: "🌿", color: "#16a34a" },
+  };
+
+  const createCategoryIcon = (category, isActive = false) => {
+    const cfg = categoryConfig[category] || { emoji: "📍", color: "#2563eb" };
+    return L.divIcon({
+      className: "",
+      html: `<div style="background:${isActive ? "#f59e0b" : cfg.color};width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;border:2px solid ${isActive ? "#0f172a" : "white"};box-shadow:0 1px 4px rgba(0,0,0,0.35);">${cfg.emoji}</div>`,
+      iconSize: [30, 30],
+      iconAnchor: [15, 15],
+    });
   };
 
   const renderMarker = (place) => {
-    const marker = L.circleMarker(place.coords, markerStyles.default);
+    const marker = L.marker(place.coords, { icon: createCategoryIcon(place.category) });
     marker.on("click", () => setActivePlace(place.id));
     marker.addTo(map);
     return marker;
@@ -124,7 +125,8 @@ if (appRoot) {
     document.body.classList.remove("place-card-open");
     activePlaceId = null;
     markers.forEach((marker, id) => {
-      marker.setStyle(markerStyles.default);
+      const place = places.find((p) => p.id === id);
+      if (place) marker.setIcon(createCategoryIcon(place.category, false));
     });
   };
 
@@ -146,14 +148,14 @@ if (appRoot) {
     const targetCenter = getTargetCenter();
 
     if (isReducedMotion) {
-      map.setView(targetCenter, targetZoom, { animate: false });
+      map.panTo(targetCenter, { animate: false });
       return;
     }
 
-    map.flyTo(targetCenter, targetZoom, {
+    map.panTo(targetCenter, {
       animate: true,
-      duration: 1.2,
-      easeLinearity: 0.15,
+      duration: 0.6,
+      easeLinearity: 0.5,
     });
   };
 
@@ -168,9 +170,8 @@ if (appRoot) {
     openCard();
 
     markers.forEach((marker, id) => {
-      marker.setStyle(
-        id === placeId ? markerStyles.active : markerStyles.default,
-      );
+      const place = places.find((p) => p.id === id);
+      if (place) marker.setIcon(createCategoryIcon(place.category, id === placeId));
     });
 
     panToPlace(place);
