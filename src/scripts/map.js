@@ -131,32 +131,15 @@ if (appRoot) {
   };
 
   const panToPlace = (place) => {
-    const targetZoom = 16;
     const isReducedMotion = prefersReducedMotion.matches;
-    const isDesktop = window.matchMedia("(min-width: 961px)").matches;
-    const desktopOffset =
-      cardPanel && isDesktop ? Math.round(cardPanel.offsetWidth * 0.4) : 0;
-    const placeLatLng = L.latLng(place.coords[0], place.coords[1]);
-
-    const getTargetCenter = () => {
-      if (!desktopOffset) return placeLatLng;
-      const pointAtZoom = map.project(placeLatLng, targetZoom);
-      const shiftedCenterPoint = L.point(pointAtZoom.x + desktopOffset, pointAtZoom.y);
-      return map.unproject(shiftedCenterPoint, targetZoom);
-    };
-
-    const targetCenter = getTargetCenter();
+    const target = L.latLng(place.coords[0], place.coords[1]);
 
     if (isReducedMotion) {
-      map.panTo(targetCenter, { animate: false });
+      map.setView(target, map.getZoom(), { animate: false });
       return;
     }
 
-    map.panTo(targetCenter, {
-      animate: true,
-      duration: 0.6,
-      easeLinearity: 0.5,
-    });
+    map.panTo(target, { animate: true, duration: 1.0, easeLinearity: 0.1 });
   };
 
   const setActivePlace = (placeId) => {

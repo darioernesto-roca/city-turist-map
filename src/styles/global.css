@@ -271,15 +271,19 @@ button {
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  transform: translateX(120%);
-  transition: transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
   z-index: 1001;
   display: flex;
   flex-direction: column;
 }
 
 .place-card-panel.is-open {
-  transform: translateX(0px);
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .place-card-header {
@@ -436,7 +440,9 @@ button {
     width: 100%;
     max-height: 100dvh;
     border-radius: 0;
+    opacity: 1;
     transform: translateY(100%);
+    transition: transform 0.3s ease;
   }
 
   .place-card-panel.is-open {
